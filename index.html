@@ -2,80 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#667eea">
-    <title>🔐 Cipher - Feature Kanban</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cipher - Kanban Board</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
-            color: #333;
         }
-
-        .header {
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
             text-align: center;
             color: white;
             margin-bottom: 30px;
-        }
-
-        .header h1 {
             font-size: 2.5em;
-            margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
-
-        .stats {
-            background: rgba(255,255,255,0.95);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        }
-
-        .stat {
-            text-align: center;
-            padding: 10px 20px;
-        }
-
-        .stat-number {
-            font-size: 2em;
-            font-weight: bold;
-            color: #667eea;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-
+        
         .board {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
-
+        
         .column {
-            background: rgba(255,255,255,0.95);
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-
+        
         .column-header {
             font-size: 1.3em;
             font-weight: bold;
@@ -84,394 +53,201 @@
             border-bottom: 3px solid #667eea;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
-
-        .column-header .count {
-            background: #667eea;
-            color: white;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8em;
-        }
-
+        
         .card {
             background: white;
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 12px;
             border-left: 4px solid #667eea;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             transition: transform 0.2s, box-shadow 0.2s;
         }
-
+        
         .card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
-
+        
         .card-title {
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #333;
-            font-size: 1.05em;
-        }
-
-        .card-meta {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-        }
-
-        .badge {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.75em;
             font-weight: 600;
-            text-transform: uppercase;
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 8px;
         }
-
-        .badge.high {
-            background: #fee;
-            color: #c33;
-        }
-
-        .badge.medium {
-            background: #fef3cd;
-            color: #856404;
-        }
-
-        .badge.low {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .badge.blocked {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .card-description {
+        
+        .card-status {
+            font-size: 0.85em;
             color: #666;
-            font-size: 0.9em;
-            line-height: 1.5;
+            margin-bottom: 8px;
+            font-style: italic;
         }
-
-        .card-description ul {
+        
+        .card-subtasks {
+            font-size: 0.9em;
+            color: #555;
             margin-left: 20px;
             margin-top: 8px;
         }
-
-        .done-card {
-            border-left-color: #28a745;
-            opacity: 0.85;
+        
+        .card-subtasks li {
+            margin-bottom: 4px;
         }
-
-        .inprogress-card {
-            border-left-color: #ffc107;
+        
+        .priority-high {
+            border-left-color: #e74c3c;
         }
-
-        .backlog-card {
-            border-left-color: #6c757d;
+        
+        .priority-medium {
+            border-left-color: #f39c12;
         }
-
+        
         .footer {
             text-align: center;
             color: white;
             margin-top: 30px;
             font-size: 0.9em;
-            opacity: 0.9;
         }
-
+        
+        .auto-refresh {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.85em;
+            margin-top: 10px;
+        }
+        
         @media (max-width: 768px) {
             .board {
                 grid-template-columns: 1fr;
             }
             
-            .header h1 {
+            h1 {
                 font-size: 1.8em;
             }
-            
-            .stats {
-                padding: 15px;
-            }
-            
-            .stat {
-                padding: 8px 15px;
-            }
-            
-            .stat-number {
-                font-size: 1.5em;
-            }
-            
-            body {
-                padding: 10px;
-            }
-            
-            .column {
-                padding: 15px;
-            }
-            
-            .card {
-                padding: 12px;
-            }
-        }
-        
-        /* Touch-friendly improvements */
-        .card {
-            cursor: pointer;
-            -webkit-tap-highlight-color: rgba(102, 126, 234, 0.1);
-        }
-        
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        /* Better text selection on mobile */
-        .card-description {
-            user-select: text;
-            -webkit-user-select: text;
         }
     </style>
 </head>
 <body>
-    <div class="header">
+    <div class="container">
         <h1>🔐 Cipher - Feature Kanban</h1>
-        <p>Personal AI Assistant Development Board</p>
-    </div>
-
-    <div class="stats">
-        <div class="stat">
-            <div class="stat-number">45+</div>
-            <div class="stat-label">Total Features</div>
-        </div>
-        <div class="stat">
-            <div class="stat-number">14</div>
-            <div class="stat-label">Completed</div>
-        </div>
-        <div class="stat">
-            <div class="stat-number">1</div>
-            <div class="stat-label">In Progress</div>
-        </div>
-        <div class="stat">
-            <div class="stat-number">32+</div>
-            <div class="stat-label">Planned</div>
-        </div>
-    </div>
-
-    <div class="board">
-        <!-- In Progress Column -->
-        <div class="column">
-            <div class="column-header">
-                🎯 In Progress
-                <span class="count">1</span>
+        
+        <div class="board">
+            <div class="column">
+                <div class="column-header">🎯 In Progress</div>
+                <div class="card"><div class="card-title">No tasks in progress</div></div>
             </div>
             
-            <div class="card inprogress-card">
-                <div class="card-title">Google Calendar Integration (WSL)</div>
-                <div class="card-meta">
-                    <span class="badge high">High Priority</span>
-                    <span class="badge blocked">Blocked</span>
+            <div class="column">
+                <div class="column-header">⏸️ Waiting</div>
+                <div class="card"><div class="card-title">Nothing waiting</div></div>
+            </div>
+            
+            <div class="column">
+                <div class="column-header">📋 To Do</div>
+                
+                <div class="card priority-high">
+                    <div class="card-title">Google Calendar Integration (WSL)</div>
+                    <div class="card-status">Blocked - waiting for user auth</div>
+                    <ul class="card-subtasks"><li>Install gog in WSL ✅</li>
+<li>User authorization (pending)</li>
+<li>Test calendar sync with Apple Calendar events</li></ul>
                 </div>
-                <div class="card-description">
-                    <strong>Status:</strong> Waiting for user auth (~22:00 tonight)<br>
-                    <strong>Blocker:</strong> Can't authorize from phone
-                    <ul>
-                        <li>✅ Install gog in WSL</li>
-                        <li>⏳ User authorization</li>
-                        <li>⏳ Test calendar sync</li>
-                    </ul>
+
+                <div class="card priority-high">
+                    <div class="card-title">iOS Node Pairing</div>
+                    <div class="card-status">❌ iOS app not publicly available yet (internal preview only)</div>
+                    <ul class="card-subtasks"><li>Waiting for public release</li>
+<li>Will enable: location tracking, camera, canvas, voice wake</li></ul>
+                </div>
+
+                <div class="card priority-medium">
+                    <div class="card-title">Life Dashboard - Connect Real Data</div>
+                    
+                    <ul class="card-subtasks"><li>✅ Integrate real weather data (weather CLI)</li>
+<li>⏳ Integrate Google Calendar events</li>
+<li>⏳ Add Apple Watch sleep data (AutoSleep)</li>
+<li>⏳ Add workout summary</li>
+<li>⏳ Backend API for data fetching</li></ul>
+                </div>
+
+                <div class="card priority-medium">
+                    <div class="card-title">Morning Brief System</div>
+                    
+                    <ul class="card-subtasks"><li>Weather forecast</li>
+<li>Today's calendar events</li>
+<li>Sleep summary from last night</li>
+<li>Suggested priorities</li>
+<li>News/updates</li></ul>
+                </div>
+
+                <div class="card priority-medium">
+                    <div class="card-title">Location Tracking & Automation</div>
+                    
+                    <ul class="card-subtasks"><li>Arrival/departure detection</li>
+<li>Location-based reminders</li>
+<li>Commute tracking</li></ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="column-header">✅ Done</div>
+                
+                <div class="card priority-medium">
+                    <div class="card-title">Social Media Integration</div>
+                    
+                    <ul class="card-subtasks"><li>Scheduled posts</li>
+<li>Analytics</li>
+<li>Automated responses</li>
+<li>Content curation</li></ul>
+                </div>
+
+                <div class="card priority-medium">
+                    <div class="card-title">Initial Setup (2026-01-28)</div>
+                    
+                    <ul class="card-subtasks"><li>✅ Telegram bot pairing</li>
+<li>✅ Install 42 skills from ClawdHub</li>
+<li>✅ Configure API keys (Anthropic, OpenAI, Google OAuth, etc.)</li>
+<li>✅ Gmail integration (send/read emails)</li>
+<li>✅ Image generation (OpenAI DALL-E 3)</li></ul>
+                </div>
+
+                <div class="card priority-medium">
+                    <div class="card-title">Test Tasks</div>
+                    
+                    <ul class="card-subtasks"><li>✅ Generated cat image</li>
+<li>✅ Sent test emails to knudjoensson@gmail.com and mj@lysholm.dk</li>
+<li>✅ Transcribed voice messages</li></ul>
+                </div>
+
+                <div class="card priority-medium">
+                    <div class="card-title">Dashboards Deployed</div>
+                    
+                    <ul class="card-subtasks"><li>✅ Kanban board (https://madspljoensson.github.io/cipher-kanban/)</li>
+<li>✅ Life dashboard MVP (https://madspljoensson.github.io/life-dashboard/)</li>
+<li>**Backlog** → Ideas, not scheduled yet</li>
+<li>**To Do** → Prioritized, ready to start</li>
+<li>**In Progress** → Currently working on</li></ul>
                 </div>
             </div>
         </div>
-
-        <!-- To Do Column -->
-        <div class="column">
-            <div class="column-header">
-                📋 To Do
-                <span class="count">3</span>
-            </div>
-
-            <div class="card">
-                <div class="card-title">iOS Node Pairing</div>
-                <div class="card-meta">
-                    <span class="badge high">High Priority</span>
-                </div>
-                <div class="card-description">
-                    <strong>Value:</strong> Location tracking, remote notifications<br>
-                    <strong>Guide:</strong> docs.molt.bot/platforms/ios
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-title">Life Dashboard - Real Data Integration</div>
-                <div class="card-meta">
-                    <span class="badge medium">Medium Priority</span>
-                </div>
-                <div class="card-description">
-                    <strong>Depends on:</strong> Google Calendar auth, Apple Health export<br>
-                    Connect weather API, calendar events, sleep & workout data
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-title">Morning Brief System</div>
-                <div class="card-meta">
-                    <span class="badge medium">Medium Priority</span>
-                </div>
-                <div class="card-description">
-                    Daily overview via Telegram: weather, calendar, sleep summary, priorities
-                </div>
-            </div>
+        
+        <div class="footer">
+            <p>Last updated: 2026-01-28 22:53 | Built with 🔐 by Cipher</p>
+            <p style="margin-top: 10px; font-size: 0.85em;">
+                4 ideas in backlog | Open <code>KANBAN.md</code> for full details
+            </p>
         </div>
-
-        <!-- Backlog Column -->
-        <div class="column">
-            <div class="column-header">
-                💡 Backlog
-                <span class="count">10+</span>
-            </div>
-
-            <div class="card backlog-card">
-                <div class="card-title">Location Tracking & Automation</div>
-                <div class="card-description">
-                    Arrival/departure detection, location-based reminders, commute tracking
-                </div>
-            </div>
-
-            <div class="card backlog-card">
-                <div class="card-title">TV Dashboard - Phase 2</div>
-                <div class="card-description">
-                    Nutrition tracking, detailed fitness, productivity metrics
-                </div>
-            </div>
-
-            <div class="card backlog-card">
-                <div class="card-title">Voice Integration</div>
-                <div class="card-description">
-                    Voice commands, TTS responses, storytelling
-                </div>
-            </div>
-
-            <div class="card backlog-card">
-                <div class="card-title">Calendar Intelligence</div>
-                <div class="card-description">
-                    Smart scheduling, conflict detection, meeting prep
-                </div>
-            </div>
-
-            <div class="card backlog-card">
-                <div class="card-title">Health & Fitness Analytics</div>
-                <div class="card-description">
-                    Recovery-based recommendations, HRV trends, goal tracking
-                </div>
-            </div>
-
-            <div class="card backlog-card">
-                <div class="card-title">Smart Home Integration</div>
-                <div class="card-description">
-                    Philips Hue, Sonos, temperature, energy monitoring
-                </div>
-            </div>
-
-            <div class="card backlog-card">
-                <div class="card-title">Proactive Assistant</div>
-                <div class="card-description">
-                    Meeting reminders, workout suggestions, package alerts
-                </div>
-            </div>
-
-            <div class="card backlog-card">
-                <div class="card-title">Financial Tracking</div>
-                <div class="card-description">
-                    Spending summaries, budget alerts, bill reminders
-                </div>
-            </div>
-
-            <div class="card backlog-card">
-                <div class="card-title">Knowledge Base</div>
-                <div class="card-description">
-                    Searchable wiki, automatic insights, learning summaries
-                </div>
-            </div>
-
-            <div class="card backlog-card">
-                <div class="card-title">+ 20 More Ideas</div>
-                <div class="card-description">
-                    See KANBAN.md for full list
-                </div>
-            </div>
-        </div>
-
-        <!-- Done Column -->
-        <div class="column">
-            <div class="column-header">
-                ✅ Done
-                <span class="count">14</span>
-            </div>
-
-            <div class="card done-card">
-                <div class="card-title">Initial Setup</div>
-                <div class="card-description">
-                    Telegram pairing, 42 skills, API keys, workspace structure
-                </div>
-            </div>
-
-            <div class="card done-card">
-                <div class="card-title">Gmail Integration</div>
-                <div class="card-description">
-                    Send/read emails via gog CLI
-                </div>
-            </div>
-
-            <div class="card done-card">
-                <div class="card-title">Image Generation</div>
-                <div class="card-description">
-                    OpenAI DALL-E 3 working
-                </div>
-            </div>
-
-            <div class="card done-card">
-                <div class="card-title">Audio Transcription</div>
-                <div class="card-description">
-                    OpenAI Whisper for voice messages
-                </div>
-            </div>
-
-            <div class="card done-card">
-                <div class="card-title">Memory System</div>
-                <div class="card-description">
-                    Daily logs + MEMORY.md + heartbeat checks
-                </div>
-            </div>
-
-            <div class="card done-card">
-                <div class="card-title">Kanban Board (Online)</div>
-                <div class="card-description">
-                    GitHub Pages deployment, mobile-optimized
-                </div>
-            </div>
-
-            <div class="card done-card">
-                <div class="card-title">Life Dashboard MVP</div>
-                <div class="card-description">
-                    Weather, calendar, sleep & workout widgets (demo data)
-                </div>
-            </div>
+        
+        <div class="auto-refresh">
+            Auto-synced from KANBAN.md by kanban worker
         </div>
     </div>
-
-    <div class="footer">
-        <p>Last updated: 2026-01-28 | Built with 🔐 by Cipher</p>
-        <p style="margin-top: 10px; font-size: 0.85em;">
-            Open <code>C:\Users\madsp\clawd\KANBAN.md</code> for full details
-        </p>
-    </div>
+    
+    <script>
+        // Auto-reload every 5 minutes to see latest updates
+        setTimeout(() => location.reload(), 300000);
+    </script>
 </body>
 </html>
